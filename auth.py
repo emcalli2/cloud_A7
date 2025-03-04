@@ -1,12 +1,15 @@
 import requests
-import passwords  # Import credentials from passwords.py
+import passwords  # Import credentials
 
-USERNAME = passwords.USERNAME
-PASSWORD = passwords.PASSWORD
+# GitHub API URL for authenticated user
+GITHUB_API_URL = "https://api.github.com/user"
 
-url = f"http://localhost:8080/basic-auth/{USERNAME}/{PASSWORD}"
+# Authenticate using GitHub username and personal access token
+response = requests.get(GITHUB_API_URL, auth=(passwords.USERNAME, passwords.TOKEN))
 
-response = requests.get(url, auth=(USERNAME, PASSWORD))
-
-print("Status Code:", response.status_code)
-print("Response JSON:", response.json())
+# Check response status
+if response.status_code == 200:
+    print("Authenticated successfully!")
+    print("User Data:", response.json())  # Print user info
+else:
+    print("Authentication failed:", response.status_code, response.text)
